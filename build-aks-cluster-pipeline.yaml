@@ -5,7 +5,9 @@ trigger:
   branches:
     include:
     - '*'
-
+  #paths:
+  #  include:
+  #  - 'IaC/terraform/*'
 variables:
 - name: env
   value: aks-cluster-ci-dev
@@ -41,9 +43,12 @@ stages:
           artifact: 'terraform-manifests-out'
           publishLocation: 'pipeline'
       - task: Bash@3
+        displayName: Show Pipeline
         inputs:
           targetType: 'inline'
-          script: 'echo "$(Pipeline.Workspace)"'
+          script: |
+            ls -la "$(Pipeline.Workspace)"
+            ls -la "$(terraformWorkingDirectory)"
       - task: TerraformInstaller@0
         displayName: Terraform Install
         inputs:
