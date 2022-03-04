@@ -21,22 +21,17 @@ stages:
       displayName: Show Directory Contents
       inputs:
         targetType: 'inline'
-        script: |
-          echo "1 current directory $(pwd)"
-          tree "$(System.DefaultWorkingDirectory)"
+        script: 'tree "$(System.DefaultWorkingDirectory)"'
     - task: Bash@3
       displayName: 'Validate Terraform Code'
       inputs:
         targetType: 'inline'
         script: |
-          echo "2 current directory is $(pwd)"
           cd $(System.DefaultWorkingDirectory)/aks-cluster/aks-cluster-iac
-          echo "3 current directory is $(pwd)"
+          pwd
           ls -la
-          ls -la ../
           terraform init
           terraform validate
-          pwd
 
 - stage: Plan
   jobs:
@@ -47,8 +42,9 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
+          cd $(System.DefaultWorkingDirectory)/aks-cluster/aks-cluster-iac
           pwd
-          cd aks-cluster/aks-cluster-iac
+          ls -la
           terraform init
           terraform plan
 
@@ -61,7 +57,8 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
+          cd $(System.DefaultWorkingDirectory)/aks-cluster/aks-cluster-iac
           pwd
-          cd aks-cluster/aks-cluster-iac
+          ls -la
           terraform init
           terraform apply -auto-approve
