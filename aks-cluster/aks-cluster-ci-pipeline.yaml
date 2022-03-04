@@ -39,9 +39,11 @@ stages:
     displayName: 'Run Speculative Plan'
     steps:
     - task: Bash@3
+      displayName: Init and Plan
       inputs:
         targetType: 'inline'
         script: |
+          tree "$(System.DefaultWorkingDirectory)"
           cd $(System.DefaultWorkingDirectory)/aks-cluster/aks-cluster-iac
           pwd
           ls -la
