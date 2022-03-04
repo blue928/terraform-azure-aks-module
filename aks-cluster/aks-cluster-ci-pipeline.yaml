@@ -17,6 +17,17 @@ stages:
   - job: Linter
     displayName: 'Linter Test'
     steps:
+    - task: TerraformCLI@0
+      displayName: 'Terraform Init with Plugin'
+      inputs:
+        command: 'init'
+        backendType: 'azurerm'
+        backendServiceArm: 'Terraform Installer'
+        backendAzureRmResourceGroupName: 'terraform-global-state-files'
+        backendAzureRmStorageAccountName: 'tfglobalstatefilessa'
+        backendAzureRmContainerName: 'tfstatefilescontainername'
+        backendAzureRmKey: 'aksclustermoduleci.tfstate'
+        allowTelemetryCollection: false
     - task: Bash@3
       displayName: Show Directory Contents
       inputs:
