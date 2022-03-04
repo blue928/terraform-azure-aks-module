@@ -36,6 +36,10 @@ stages:
         clean: all
       continueOnError: false
       steps:
+      - task: TerraformInstaller@0
+        displayName: Install Terraform
+        inputs:
+          terraformVersion: '1.1.7'
       - task: PublishPipelineArtifact@1
         displayName: Publish Artifacts
         inputs:
@@ -49,15 +53,12 @@ stages:
           script: |
             ls -la "$(Pipeline.Workspace)"
             ls -la "$(terraformWorkingDirectory)"
-      - task: TerraformInstaller@0
-        displayName: Terraform Install
-        inputs:
-          terraformVersion: '1.1.7'
       - task: TerraformCLI@0
         displayName: Terraform Init
         inputs:
           command: 'init'
           workingDirectory: '$(terraformWorkingDirectory)'
+          commandOptions: '-upgrade'
           backendType: 'azurerm'
           backendServiceArm: 'Terraform Installer'
           ensureBackend: true
@@ -140,7 +141,6 @@ stages:
                 environmentServiceName: 'Terraform Installer'
                 commandOptions: '-out $(Pipeline.Workspace)/terraform-manifests-out/$(PROD)-$(Build.BuildId).out'''
                 allowTelemetryCollection: false
-                publishPlanResults: '$(Build.BuildId).out'
             - task: TerraformCLI@0
               displayName: Terraform Apply
               inputs:
