@@ -44,7 +44,7 @@ stages:
         targetType: 'inline'
         script: |
           pwd
-          cd pipeline1/iac01
+          cd aks-cluster/aks-cluster-iac
           terraform init
           terraform plan
 
@@ -57,6 +57,7 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
+          pwd
           cd aks-cluster/aks-cluster-iac
           terraform init
           terraform apply -auto-approve
