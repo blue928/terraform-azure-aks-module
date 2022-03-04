@@ -16,7 +16,7 @@ variables:
 - name: PROD
   value: production
 - name: terraformWorkingDirectory
-  value: $(System.DefaultWorkingDirectory)/IaC/terraform
+  value: $(System.DefaultWorkingDirectory)
 pool:
   name: 'Azure Pipelines'
   #name: Default
