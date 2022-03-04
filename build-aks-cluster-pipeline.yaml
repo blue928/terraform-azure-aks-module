@@ -73,7 +73,7 @@ stages:
       #    command: 'plan'
       #    workingDirectory: '$(terraformWorkingDirectory)'
       #    environmentServiceName: 'Terraform Installer'
-      #    commandOptions: '-var ssh_public_key=$(sshkey.secureFilePath) -var environment=$(PROD) -out $(Pipeline.Workspace)/terraform-manifests-out/$(PROD)-$(Build.BuildId).out'''
+      #    commandOptions: '-out $(Pipeline.Workspace)/terraform-manifests-out/$(PROD)-$(Build.BuildId).out'''
       #    allowTelemetryCollection: false
 
 # Stage-2: Deploy Stages for Dev & QA
@@ -86,22 +86,22 @@ stages:
 
 - stage: DeployTerraformProductionInfrastructure
   jobs:
-    - deployment: DeployTerraformProductionInfrastructure
+    - deployment: DeployTerraformAKSCluster
       workspace:
         clean: all
-      displayName: DeployTerraformProductionInfrastructure
+      displayName: DeployTerraformAKSCluster
       #pool:
       #  name: Default
-      environment: $(PROD)      
+      # environment: $(PROD)      
       strategy:
         runOnce:
           deploy:
             steps:            
-            - task: DownloadSecureFile@1
-              displayName: Download SSH Key
-              name: sshkey
-              inputs:
-                secureFile: 'aksprodsshkey.pub'
+            #- task: DownloadSecureFile@1
+            #  displayName: Download SSH Key
+            #  name: sshkey
+            #  inputs:
+            #    secureFile: 'aksprodsshkey.pub'
             - task: Bash@3
               inputs:
                 targetType: 'inline'
@@ -127,7 +127,7 @@ stages:
                 command: 'plan'
                 workingDirectory: '$(Pipeline.Workspace)/terraform-manifests-out'
                 environmentServiceName: 'Terraform Installer'
-                commandOptions: '-var ssh_public_key=$(sshkey.secureFilePath) -var environment=$(PROD) -out $(Pipeline.Workspace)/terraform-manifests-out/$(PROD)-$(Build.BuildId).out'''
+                commandOptions: '-out $(Pipeline.Workspace)/terraform-manifests-out/$(PROD)-$(Build.BuildId).out'''
                 allowTelemetryCollection: false
                 publishPlanResults: '$(Build.BuildId).out'
             - task: TerraformCLI@0
