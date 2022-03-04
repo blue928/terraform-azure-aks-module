@@ -43,7 +43,7 @@ stages:
           artifact: 'terraform-manifests-out'
           publishLocation: 'pipeline'
       - task: Bash@3
-        displayName: Show Pipeline
+        displayName: Show Directory Contents
         inputs:
           targetType: 'inline'
           script: |
@@ -109,10 +109,14 @@ stages:
             #  name: sshkey
             #  inputs:
             #    secureFile: 'aksprodsshkey.pub'
+          
             - task: Bash@3
+              displayName: Show Directory Contents
               inputs:
                 targetType: 'inline'
-                script: 'echo "$(Pipeline.Workspace)"'
+                script: |
+                  ls -la "$(Pipeline.Workspace)"
+                  ls -la "$(terraformWorkingDirectory)"
             - task: TerraformCLI@0
               displayName: Terraform Init
               inputs:
