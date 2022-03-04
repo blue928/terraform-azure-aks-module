@@ -7,6 +7,8 @@ trigger:
     - '*'
 
 variables:
+- name: env
+  value: aks-cluster-ci-dev
 - name: DEV_ENVIRONMENT
   value: dev
 - name: QA_ENVIRONMENT
@@ -84,7 +86,7 @@ stages:
 ## Step-4: Terraform Plan (Create Plan)
 ## Step-5: Terraform Apply (Use the plan created in previous step)
 
-- stage: DeployTerraformProductionInfrastructure
+- stage: DeployTerraformAKSCluster
   jobs:
     - deployment: DeployTerraformAKSCluster
       workspace:
@@ -92,7 +94,7 @@ stages:
       displayName: DeployTerraformAKSCluster
       #pool:
       #  name: Default
-      # environment: $(PROD)      
+      environment: $(env)      
       strategy:
         runOnce:
           deploy:
