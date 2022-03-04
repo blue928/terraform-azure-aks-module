@@ -30,7 +30,7 @@ stages:
         targetType: 'inline'
         script: |
           pwd
-          cd "$(System.DefaultWorkingDirectory)/aks-cluster/aks-cluster-iac"
+          cd $(System.DefaultWorkingDirectory)/aks-cluster/aks-cluster-iac
           terraform init
           terraform validate
 
