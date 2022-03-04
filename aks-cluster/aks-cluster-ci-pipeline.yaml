@@ -26,13 +26,16 @@ stages:
           tree "$(System.DefaultWorkingDirectory)"
           tree "$(Pipeline.Workspace)"
     - task: Bash@3
+      displayName: 'Validate Terraform Code'
       inputs:
         targetType: 'inline'
         script: |
           pwd
           cd $(System.DefaultWorkingDirectory)/aks-cluster/aks-cluster-iac
+          pwd
           terraform init
           terraform validate
+          pwd
 
 - stage: Plan
   jobs:
