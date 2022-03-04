@@ -21,16 +21,15 @@ stages:
       displayName: Show Directory Contents
       inputs:
         targetType: 'inline'
-        script: |
-          pwd
-          tree "$(System.DefaultWorkingDirectory)"
-          tree "$(Pipeline.Workspace)"
+        script: 'tree "$(System.DefaultWorkingDirectory)"'
     - task: Bash@3
+      displayName: 'Validate Terraform Code'
       inputs:
         targetType: 'inline'
         script: |
+          cd $(System.DefaultWorkingDirectory)/aks-cluster/aks-cluster-iac
           pwd
-          cd "$(System.DefaultWorkingDirectory)/aks-cluster/aks-cluster-iac"
+          ls -la
           terraform init
           terraform validate
 
@@ -40,11 +39,14 @@ stages:
     displayName: 'Run Speculative Plan'
     steps:
     - task: Bash@3
+      displayName: Init and Plan
       inputs:
         targetType: 'inline'
         script: |
+          tree "$(System.DefaultWorkingDirectory)"
+          cd $(System.DefaultWorkingDirectory)/aks-cluster/aks-cluster-iac
           pwd
-          cd aks-cluster/aks-cluster-iac
+          ls -la
           terraform init
           terraform plan
 
@@ -57,7 +59,8 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
+          cd $(System.DefaultWorkingDirectory)/aks-cluster/aks-cluster-iac
           pwd
-          cd aks-cluster/aks-cluster-iac
+          ls -la
           terraform init
           terraform apply -auto-approve
